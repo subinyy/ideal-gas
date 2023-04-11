@@ -1,0 +1,85 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from mpl_toolkits.mplot3d import Axes3D
+
+IdealGas=plt.figure( )
+
+x=input()
+y=input()
+z=input()
+
+PVT=plt.axes(projection='3d')
+PVT.set_xlabel(x)
+PVT.set_ylabel(y)
+PVT.set_zlabel(z)
+
+x_p=0
+y_p=0
+if x=='P' or x=='V':
+    x_p=1
+else:
+    x_p=2
+if y=='P' or y=='V':
+    y_p=1
+else:
+    y_p=2
+
+x_value = 0
+y_value = 0
+z_value = 0
+
+R=0.082
+
+if x=='P':
+    x_value=np.linspace(1,50,50)
+elif x=='V':
+    x_value=np.linspace(10, 59, 50)
+elif x=='T' :
+    x_value=np.linspace(273, 323, 50)
+elif x=='n' :
+    x_value=np.linspace(1, 50, 50)
+
+if y=='P':
+    y_value=np.linspace(1,50,50)
+elif y=='V':
+    y_value=np.linspace(10, 59, 50)
+elif y=='T' :
+    y_value=np.linspace(273, 323, 50)
+elif y=='n' :
+    y_value=np.linspace(1, 50, 50)
+
+if z=='P':
+    z_value=np.linspace(1,50,50)
+elif z=='V':
+    z_value=np.linspace(10, 59, 50)
+elif z=='T' :
+    z_value=np.linspace(273, 323, 50)
+elif z=='n' :
+    z_value=np.linspace(1, 50, 50)
+
+X, Y=np.meshgrid(x_value, y_value)       
+
+if x_p==y_p:
+    Z = X * Y / R #x,y 가 위치한 변이 같다면
+else:
+    z_p=0
+    if z=='P' or z=='V':
+        z_p=1
+    else:
+        z_p=2
+
+    if z_p==x_p:
+        if z=='P' or z=='V' :
+          Z = R * Y / X
+        else : 
+          Z = Y / (X * R)
+    elif z_p==y_p:
+        if z=='P' or z=='V' :
+          Z = R * X / Y 
+        else : 
+          Z = X / (Y * R)
+
+Graph=PVT.plot_surface(X, Y, Z, cmap=cm.viridis)
+IdealGas.colorbar(Graph, ax=PVT)
+plt.show( )
